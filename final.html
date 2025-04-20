@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Critique Exchange</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --primary-light: #8B85FF;
+            --secondary: #FF6584;
+            --accent: #42C2FF;
+            --success: #4ADE80;
+            --warning: #F59E0B;
+            --error: #F87171;
+            --dark: #1E293B;
+            --light: #F8FAFC;
+            --gray: #94A3B8;
+            --bg-gradient: linear-gradient(135deg, #6C63FF 0%, #42C2FF 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--dark);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.85);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        header::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--bg-gradient);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .icon {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--gray);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border 0.3s, box-shadow 0.3s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--bg-gradient);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            box-shadow: 0 4px 15px rgba(255, 101, 132, 0.3);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 20px rgba(255, 101, 132, 0.4);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: var(--gray);
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .divider span {
+            padding: 0 15px;
+        }
+
+        #portfolio-display {
+            border: 1px dashed var(--primary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: rgba(108, 99, 255, 0.05);
+        }
+
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .review-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .review-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .rating {
+            color: var(--warning);
+            font-weight: bold;
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .confirmation-message i {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        .confirmation-message h2 {
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            background-color: #FFEBEE;
+            border-left: 4px solid var(--error);
+            padding: 15px;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .error-message p {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .dashboard {
+                grid-row: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-code-branch"></i> Portfolio Critique Exchange</h1>
+            <p class="tagline">Get anonymous feedback on your portfolio by reviewing others' work</p>
+        </header>
+
+        <div class="main-content">
+            <div class="content-area">
+                <!-- Submission Section -->
+                <div id="submit-section" class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-upload icon"></i> Submit Your Portfolio</h2>
+                    </div>
+                    <form id="submit-form">
+                        <div class="form-group">
+                            <label for="portfolio-url">Portfolio URL</label>
+                            <input type="url" id="portfolio-url" required placeholder="https://yourportfolio.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="portfolio-type">Portfolio Type</label>
+                            <select id="portfolio-type" required>
+                                <option value="">Select type</option>
+                                <option value="developer">Developer Portfolio</option>
+                                <option value="designer">Designer Portfolio</option>
+                                <option value="hybrid">Hybrid (Designer + Developer)</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tech-stack">Technologies Used (comma separated)</label>
+                            <input type="text" id="tech-stack" placeholder="HTML, CSS, JavaScript, React, etc.">
+                        </div>
+                        
+                        <button type="submit" class="btn">Submit Portfolio</button>
+                    </form>
+                    
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+                    
+                    <button id="review-btn" class="btn btn-secondary">Review a Portfolio</button>
+                </div>
+
+                <!-- Review Section -->
+                <div id="review-section" class="card hidden">
+                    <div class="card-header">
+                        <h2><i class="fas fa-eye icon"></i> Review a Portfolio</h2>
+                    </div>
+                    <div id="portfolio-display">
+                        <p>Loading a portfolio for you to review...</p>
+                    </div>
+                    
+                    <form id="review-form" class="hidden">
+                        <div class="form-group">
+                            <label>First Impressions</label>
+                            <textarea id="first-impressions" required placeholder="What are your initial thoughts?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Strengths</label>
+                            <textarea id="strengths" required placeholder="What works well?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Areas for Improvement</label>
+                            <textarea id="improvements" required placeholder="What could be better?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Overall Rating (1-5)</label>
+                            <select id="rating" required>
+                                <option value="">Select rating</option>
+                                <option value="1">1 - Needs significant work</option>
+                                <option value="2">2 - Has potential but needs improvement</option>
+                                <option value="3">3 - Good, but could be better</option>
+                                <option value="4">4 - Very good with minor issues</option>
+                                <option value="5">5 - Excellent portfolio</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn">Submit Review</button>
+                    </form>
+                </div>
+
+                <!-- Confirmation Section -->
+                <div id="confirmation-section" class="card hidden">
+                    <div class="confirmation-message">
+                        <i class="fas fa-check-circle"></i>
+                        <div id="confirmation-message">
+                            <h2>Thank You!</h2>
+                            <p>Your submission has been received successfully!</p>
+                        </div>
+                        <button id="new-submission" class="btn" style="margin-right: 10px;">Submit Another Portfolio</button>
+                        <button id="new-review" class="btn btn-secondary">Review Another Portfolio</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Sidebar -->
+            <div class="dashboard">
+                <div class="stat-card">
+                    <i class="fas fa-file-alt" style="font-size: 2rem; color: var(--primary);"></i>
+                    <div class="stat-value" id="total-portfolios">0</div>
+                    <div class="stat-label">Portfolios Submitted</div>
+                </div>
+                
+                <div class="stat-card">
+                    <i class="fas fa-star" style="font-size: 2rem; color: var(--warning);"></i>
+                    <div class="stat-value" id="total-reviews">0</div>
+                    <div class="stat-label">Reviews Given</div>
+                </div>
+                
+                <div class="stat-card">
+                    <i class="fas fa-chart-line" style="font-size: 2rem; color: var(--success);"></i>
+                    <div class="stat-value" id="avg-rating">0.0</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-history icon"></i> Recent Activity</h2>
+                    </div>
+                    <div id="recent-activity">
+                        <p>No recent activity yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    // Replace the entire script section with this corrected version
+
+<!-- Replace the entire script section with this corrected version -->
+<!-- Replace the entire script section with this corrected version -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeStorage();
+    
+        const submitSection = document.getElementById('submit-section');
+        const reviewSection = document.getElementById('review-section');
+        const confirmationSection = document.getElementById('confirmation-section');
+        const submitForm = document.getElementById('submit-form');
+        const reviewForm = document.getElementById('review-form');
+        const reviewBtn = document.getElementById('review-btn');
+        const newSubmissionBtn = document.getElementById('new-submission');
+        const newReviewBtn = document.getElementById('new-review');
+        const portfolioDisplay = document.getElementById('portfolio-display');
+        const totalPortfoliosEl = document.getElementById('total-portfolios');
+        const totalReviewsEl = document.getElementById('total-reviews');
+        const avgRatingEl = document.getElementById('avg-rating');
+        const recentActivityEl = document.getElementById('recent-activity');
+    
+        let currentPortfolioId = null;
+        updateDashboard();
+    
+        reviewBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loadPortfolioForReview();
+        });
+    
+        newSubmissionBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('submit');
+        });
+    
+        newReviewBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection('review');
+            loadPortfolioForReview();
+        });
+    
+        submitForm.addEventListener('submit', handlePortfolioSubmit);
+        reviewForm.addEventListener('submit', handleReviewSubmit);
+    
+        function initializeStorage() {
+            if (!localStorage.getItem('portfolios')) {
+                localStorage.setItem('portfolios', JSON.stringify([]));
+            }
+            if (!localStorage.getItem('reviews')) {
+                localStorage.setItem('reviews', JSON.stringify([]));
+            }
+            if (!localStorage.getItem('activity')) {
+                localStorage.setItem('activity', JSON.stringify([]));
+            }
+        }
+    
+        function showSection(section) {
+            submitSection.classList.add('hidden');
+            reviewSection.classList.add('hidden');
+            confirmationSection.classList.add('hidden');
+    
+            if (section === 'submit') {
+                submitSection.classList.remove('hidden');
+            } else if (section === 'review') {
+                reviewSection.classList.remove('hidden');
+            } else if (section === 'confirmation') {
+                confirmationSection.classList.remove('hidden');
+            }
+        }
+    
+        function handlePortfolioSubmit(e) {
+            e.preventDefault();
+    
+            const portfolioUrl = document.getElementById('portfolio-url').value;
+            const portfolioType = document.getElementById('portfolio-type').value;
+            const techStack = document.getElementById('tech-stack').value
+                .split(',')
+                .map(item => item.trim())
+                .filter(item => item.length > 0);
+    
+            const portfolios = JSON.parse(localStorage.getItem('portfolios'));
+            const newPortfolio = {
+                id: Date.now().toString(),
+                portfolioUrl,
+                portfolioType,
+                techStack,
+                createdAt: new Date().toISOString(),
+                reviewed: false
+            };
+    
+            portfolios.push(newPortfolio);
+            localStorage.setItem('portfolios', JSON.stringify(portfolios));
+    
+            addActivity(`New portfolio submitted: ${portfolioType}`);
+    
+            document.getElementById('confirmation-message').innerHTML = `
+                <h2>Thank You!</h2>
+                <p>Your portfolio has been submitted successfully!</p>
+                <p>To receive feedback, please review someone else's portfolio.</p>
+            `;
+            showSection('confirmation');
+            submitForm.reset();
+            updateDashboard();
+        }
+    
+        function loadPortfolioForReview() {
+            showSection('review');
+            portfolioDisplay.innerHTML = '<p>Loading a portfolio for you to review...</p>';
+            reviewForm.classList.add('hidden');
+    
+            const portfolios = JSON.parse(localStorage.getItem('portfolios'));
+            const unreviewedPortfolios = portfolios.filter(p => !p.reviewed);
+    
+            if (unreviewedPortfolios.length === 0) {
+                portfolioDisplay.innerHTML = `
+                    <div class="error-message">
+                        <p>No portfolios available for review right now.</p>
+                        <p>Please submit your own portfolio first.</p>
+                    </div>
+                `;
+                return;
+            }
+    
+            const randomIndex = Math.floor(Math.random() * unreviewedPortfolios.length);
+            const portfolioToReview = unreviewedPortfolios[randomIndex];
+            currentPortfolioId = portfolioToReview.id;
+    
+            portfolioDisplay.innerHTML = `
+                <h3>Portfolio to Review</h3>
+                <p><strong>Type:</strong> ${formatPortfolioType(portfolioToReview.portfolioType)}</p>
+                ${portfolioToReview.techStack.length ? `<p><strong>Technologies:</strong> ${portfolioToReview.techStack.join(', ')}</p>` : ''}
+                <p><strong>URL:</strong> <a href="${portfolioToReview.portfolioUrl}" target="_blank">${portfolioToReview.portfolioUrl}</a></p>
+                <p>Please visit the portfolio and then complete the review form below.</p>
+            `;
+    
+            reviewForm.classList.remove('hidden');
+        }
+    
+        function handleReviewSubmit(e) {
+            e.preventDefault();
+    
+            const firstImpressions = document.getElementById('first-impressions').value;
+            const strengths = document.getElementById('strengths').value;
+            const improvements = document.getElementById('improvements').value;
+            const rating = document.getElementById('rating').value;
+    
+            const portfolios = JSON.parse(localStorage.getItem('portfolios'));
+            const portfolioIndex = portfolios.findIndex(p => p.id === currentPortfolioId);
+    
+            if (portfolioIndex !== -1) {
+                portfolios[portfolioIndex].reviewed = true;
+                localStorage.setItem('portfolios', JSON.stringify(portfolios));
+            }
+    
+            const reviews = JSON.parse(localStorage.getItem('reviews'));
+            const newReview = {
+                id: Date.now().toString(),
+                portfolioId: currentPortfolioId,
+                feedback: {
+                    firstImpressions,
+                    strengths,
+                    improvements
+                },
+                rating: Math.min(5, Math.max(1, parseInt(rating))),
+                createdAt: new Date().toISOString()
+            };
+    
+            reviews.push(newReview);
+            localStorage.setItem('reviews', JSON.stringify(reviews));
+    
+            addActivity(`New review submitted (Rating: ${rating}/5)`);
+    
+            document.getElementById('confirmation-message').innerHTML = `
+                <h2>Thank You!</h2>
+                <p>Your review has been submitted successfully!</p>
+                <p>Your feedback helps others improve their portfolios.</p>
+            `;
+            showSection('confirmation');
+            reviewForm.reset();
+            updateDashboard();
+        }
+    
+        function formatPortfolioType(type) {
+            const types = {
+                'developer': 'Developer Portfolio',
+                'designer': 'Designer Portfolio',
+                'hybrid': 'Hybrid Portfolio',
+                'other': 'Other Portfolio'
+            };
+            return types[type] || type;
+        }
+    
+        function updateDashboard() {
+            const portfolios = JSON.parse(localStorage.getItem('portfolios'));
+            const reviews = JSON.parse(localStorage.getItem('reviews'));
+            const activity = JSON.parse(localStorage.getItem('activity'));
+    
+            totalPortfoliosEl.textContent = portfolios.length;
+            totalReviewsEl.textContent = reviews.length;
+    
+            const avgRating = reviews.length > 0
+                ? (reviews.reduce((sum, review) => sum + parseInt(review.rating), 0) / reviews.length).toFixed(1)
+                : 0;
+            avgRatingEl.textContent = avgRating;
+    
+            updateActivityLog(activity);
+        }
+    
+        function addActivity(message) {
+            const activity = JSON.parse(localStorage.getItem('activity'));
+            const newActivity = {
+                message,
+                timestamp: new Date().toISOString()
+            };
+    
+            const updatedActivity = [newActivity, ...activity].slice(0, 5);
+            localStorage.setItem('activity', JSON.stringify(updatedActivity));
+    
+            updateActivityLog(updatedActivity);
+        }
+    
+        function updateActivityLog(activity) {
+            if (activity.length === 0) {
+                recentActivityEl.innerHTML = '<p>No recent activity yet</p>';
+                return;
+            }
+    
+            recentActivityEl.innerHTML = activity.map(item => `
+                <div class="review-item">
+                    <div class="review-meta">
+                        <span>${formatTime(item.timestamp)}</span>
+                    </div>
+                    <p>${item.message}</p>
+                </div>
+            `).join('');
+        }
+    
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleString();
+        }
+    });
+    </script>
+    
