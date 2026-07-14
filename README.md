@@ -396,12 +396,6 @@ chore:    Build/config changes
 
 ---
 
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
----
-
 ## ⭐ Star History
 
 If you find this project useful, please consider giving it a ⭐ star on GitHub!
